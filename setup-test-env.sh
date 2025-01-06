@@ -17,7 +17,7 @@ if [ ! "$COVERAGE" = true ]; then
     # remove hardhat and artifacts cache
     npm run ci:clean
 
-    # compile @aave/core-v3 contracts
+    # compile @hedy_chu/core-v3 contracts
     npm run compile
 else
     echo "[BASH] Skipping compilation to keep coverage artifacts"

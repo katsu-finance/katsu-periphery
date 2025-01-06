@@ -1,21 +1,22 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
-import {IERC20Detailed} from '@aave/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
-import {IPoolAddressesProvider} from '@aave/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
-import {IPool} from '@aave/core-v3/contracts/interfaces/IPool.sol';
-import {IAaveOracle} from '@aave/core-v3/contracts/interfaces/IAaveOracle.sol';
-import {IAToken} from '@aave/core-v3/contracts/interfaces/IAToken.sol';
-import {IVariableDebtToken} from '@aave/core-v3/contracts/interfaces/IVariableDebtToken.sol';
-import {IStableDebtToken} from '@aave/core-v3/contracts/interfaces/IStableDebtToken.sol';
-import {DefaultReserveInterestRateStrategy} from '@aave/core-v3/contracts/protocol/pool/DefaultReserveInterestRateStrategy.sol';
-import {AaveProtocolDataProvider} from '@aave/core-v3/contracts/misc/AaveProtocolDataProvider.sol';
-import {WadRayMath} from '@aave/core-v3/contracts/protocol/libraries/math/WadRayMath.sol';
-import {ReserveConfiguration} from '@aave/core-v3/contracts/protocol/libraries/configuration/ReserveConfiguration.sol';
-import {UserConfiguration} from '@aave/core-v3/contracts/protocol/libraries/configuration/UserConfiguration.sol';
-import {DataTypes} from '@aave/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
-import {IEACAggregatorProxy} from './interfaces/IEACAggregatorProxy.sol';
+import {IERC20Detailed} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
+import {IPoolAddressesProvider} from '@hedy_chu/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
+import {IPool} from '@hedy_chu/core-v3/contracts/interfaces/IPool.sol';
+import {IAaveOracle} from '@hedy_chu/core-v3/contracts/interfaces/IAaveOracle.sol';
+import {IAToken} from '@hedy_chu/core-v3/contracts/interfaces/IAToken.sol';
+import {IVariableDebtToken} from '@hedy_chu/core-v3/contracts/interfaces/IVariableDebtToken.sol';
+import {IStableDebtToken} from '@hedy_chu/core-v3/contracts/interfaces/IStableDebtToken.sol';
+import {DefaultReserveInterestRateStrategy} from '@hedy_chu/core-v3/contracts/protocol/pool/DefaultReserveInterestRateStrategy.sol';
+import {AaveProtocolDataProvider} from '@hedy_chu/core-v3/contracts/misc/AaveProtocolDataProvider.sol';
+import {WadRayMath} from '@hedy_chu/core-v3/contracts/protocol/libraries/math/WadRayMath.sol';
+import {ReserveConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/ReserveConfiguration.sol';
+import {UserConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/UserConfiguration.sol';
+import {DataTypes} from '@hedy_chu/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
 import {IERC20DetailedBytes} from './interfaces/IERC20DetailedBytes.sol';
+import {IPyth} from './interfaces/pyth/IPyth.sol';
+import {PythStructs} from './interfaces/pyth/PythStructs.sol';
 import {IUiPoolDataProviderV3} from './interfaces/IUiPoolDataProviderV3.sol';
 
 contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
@@ -23,17 +24,20 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
   using ReserveConfiguration for DataTypes.ReserveConfigurationMap;
   using UserConfiguration for DataTypes.UserConfigurationMap;
 
-  IEACAggregatorProxy public immutable networkBaseTokenPriceInUsdProxyAggregator;
-  IEACAggregatorProxy public immutable marketReferenceCurrencyPriceInUsdProxyAggregator;
+  bytes32 public immutable networkBaseTokenPriceInUsdPriceId;
+  bytes32 public immutable marketReferenceCurrencyPriceInUsdPriceId;
+  IPyth public immutable pyth;
   uint256 public constant ETH_CURRENCY_UNIT = 1 ether;
   address public constant MKR_ADDRESS = 0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2;
 
   constructor(
-    IEACAggregatorProxy _networkBaseTokenPriceInUsdProxyAggregator,
-    IEACAggregatorProxy _marketReferenceCurrencyPriceInUsdProxyAggregator
+    IPyth pythAddress,
+    bytes32 _networkBaseTokenPriceInUsdPriceId,
+    bytes32 _marketReferenceCurrencyPriceInUsdPriceId
   ) {
-    networkBaseTokenPriceInUsdProxyAggregator = _networkBaseTokenPriceInUsdProxyAggregator;
-    marketReferenceCurrencyPriceInUsdProxyAggregator = _marketReferenceCurrencyPriceInUsdProxyAggregator;
+    pyth = pythAddress;
+    networkBaseTokenPriceInUsdPriceId = _networkBaseTokenPriceInUsdPriceId;
+    marketReferenceCurrencyPriceInUsdPriceId = _marketReferenceCurrencyPriceInUsdPriceId;
   }
 
   function getReservesList(
@@ -80,7 +84,7 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
       reserveData.priceInMarketReferenceCurrency = oracle.getAssetPrice(
         reserveData.underlyingAsset
       );
-      reserveData.priceOracle = oracle.getSourceOfAsset(reserveData.underlyingAsset);
+      reserveData.priceOracle = oracle.getPyth();
       reserveData.availableLiquidity = IERC20Detailed(reserveData.underlyingAsset).balanceOf(
         reserveData.aTokenAddress
       );
@@ -202,19 +206,18 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
     }
 
     BaseCurrencyInfo memory baseCurrencyInfo;
-    baseCurrencyInfo.networkBaseTokenPriceInUsd = networkBaseTokenPriceInUsdProxyAggregator
-      .latestAnswer();
-    baseCurrencyInfo.networkBaseTokenPriceDecimals = networkBaseTokenPriceInUsdProxyAggregator
-      .decimals();
+    PythStructs.Price memory baseTokenPrice = pyth.getPriceNoOlderThan(networkBaseTokenPriceInUsdPriceId, 60);
+    baseCurrencyInfo.networkBaseTokenPriceInUsd = baseTokenPrice.price;
+    baseCurrencyInfo.networkBaseTokenPriceDecimals = uint8(uint32(-1 * baseTokenPrice.expo));
 
     try oracle.BASE_CURRENCY_UNIT() returns (uint256 baseCurrencyUnit) {
       baseCurrencyInfo.marketReferenceCurrencyUnit = baseCurrencyUnit;
       baseCurrencyInfo.marketReferenceCurrencyPriceInUsd = int256(baseCurrencyUnit);
     } catch (bytes memory /*lowLevelData*/) {
       baseCurrencyInfo.marketReferenceCurrencyUnit = ETH_CURRENCY_UNIT;
+      PythStructs.Price memory currencyPrice = pyth.getPriceNoOlderThan(marketReferenceCurrencyPriceInUsdPriceId, 60);
       baseCurrencyInfo
-        .marketReferenceCurrencyPriceInUsd = marketReferenceCurrencyPriceInUsdProxyAggregator
-        .latestAnswer();
+        .marketReferenceCurrencyPriceInUsd = currencyPrice.price;
     }
 
     return (reservesData, baseCurrencyInfo);

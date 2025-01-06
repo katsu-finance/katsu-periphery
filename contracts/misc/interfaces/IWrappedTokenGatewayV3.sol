@@ -2,25 +2,25 @@
 pragma solidity ^0.8.10;
 
 interface IWrappedTokenGatewayV3 {
-  function depositETH(address pool, address onBehalfOf, uint16 referralCode) external payable;
+  function depositIP(address pool, address onBehalfOf, uint16 referralCode) external payable;
 
-  function withdrawETH(address pool, uint256 amount, address onBehalfOf) external;
+  function withdrawIP(address pool, uint256 amount, address onBehalfOf) external;
 
-  function repayETH(
+  function repayIP(
     address pool,
     uint256 amount,
     uint256 rateMode,
     address onBehalfOf
   ) external payable;
 
-  function borrowETH(
+  function borrowIP(
     address pool,
     uint256 amount,
     uint256 interestRateMode,
     uint16 referralCode
   ) external;
 
-  function withdrawETHWithPermit(
+  function withdrawIPWithPermit(
     address pool,
     uint256 amount,
     address to,

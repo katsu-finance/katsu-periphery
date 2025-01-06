@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import {WETH9} from '@aave/core-v3/contracts/dependencies/weth/WETH9.sol';
-import {Ownable} from '@aave/core-v3/contracts/dependencies/openzeppelin/contracts/Ownable.sol';
+import {WETH9} from '@hedy_chu/core-v3/contracts/dependencies/weth/WETH9.sol';
+import {Ownable} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/Ownable.sol';
 
 contract WETH9Mock is WETH9, Ownable {
   bool internal _protected;

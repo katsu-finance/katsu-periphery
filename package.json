@@ -1,11 +1,14 @@
 {
-  "name": "@aave/periphery-v3",
-  "version": "2.5.2",
+  "name": "@hedy_chu/periphery-v3",
+  "version": "2.4.8",
   "description": "Aave Protocol V3 periphery smart contracts",
   "files": [
     "contracts",
     "artifacts"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "run-env": "npm i && tail -f /dev/null",
     "hardhat": "hardhat",
@@ -86,6 +89,6 @@
     "url": "git://github.com/aave/aave-v3-periphery"
   },
   "dependencies": {
-    "@aave/core-v3": "1.19.3"
+    "@hedy_chu/core-v3": "1.19.6"
   }
 }
