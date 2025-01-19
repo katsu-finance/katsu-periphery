@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
-import {IEACAggregatorProxy} from '../../misc/interfaces/IEACAggregatorProxy.sol';
+import {IFallbackOracle} from '@hedy_chu/core-v3/contracts/interfaces/IFallbackOracle.sol';
 import {RewardsDataTypes} from '../libraries/RewardsDataTypes.sol';
 import {ITransferStrategyBase} from './ITransferStrategyBase.sol';
 import {IRewardsController} from './IRewardsController.sol';
@@ -57,7 +57,7 @@ interface IEmissionManager {
    * @param reward The address of the reward to set the price aggregator
    * @param rewardOracle The address of price aggregator that follows IEACAggregatorProxy interface
    */
-  function setRewardOracle(address reward, IEACAggregatorProxy rewardOracle) external;
+  function setRewardOracle(address reward, IFallbackOracle rewardOracle) external;
 
   /**
    * @dev Sets the end date for the distribution

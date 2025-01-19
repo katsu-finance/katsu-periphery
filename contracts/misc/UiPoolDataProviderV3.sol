@@ -5,6 +5,7 @@ import {IERC20Detailed} from '@hedy_chu/core-v3/contracts/dependencies/openzeppe
 import {IPoolAddressesProvider} from '@hedy_chu/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
 import {IPool} from '@hedy_chu/core-v3/contracts/interfaces/IPool.sol';
 import {IAaveOracle} from '@hedy_chu/core-v3/contracts/interfaces/IAaveOracle.sol';
+import {IFallbackOracle} from '@hedy_chu/core-v3/contracts/interfaces/IFallbackOracle.sol';
 import {IAToken} from '@hedy_chu/core-v3/contracts/interfaces/IAToken.sol';
 import {IVariableDebtToken} from '@hedy_chu/core-v3/contracts/interfaces/IVariableDebtToken.sol';
 import {IStableDebtToken} from '@hedy_chu/core-v3/contracts/interfaces/IStableDebtToken.sol';
@@ -15,8 +16,6 @@ import {ReserveConfiguration} from '@hedy_chu/core-v3/contracts/protocol/librari
 import {UserConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/UserConfiguration.sol';
 import {DataTypes} from '@hedy_chu/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
 import {IERC20DetailedBytes} from './interfaces/IERC20DetailedBytes.sol';
-import {IPyth} from './interfaces/pyth/IPyth.sol';
-import {PythStructs} from './interfaces/pyth/PythStructs.sol';
 import {IUiPoolDataProviderV3} from './interfaces/IUiPoolDataProviderV3.sol';
 
 contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
@@ -24,20 +23,17 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
   using ReserveConfiguration for DataTypes.ReserveConfigurationMap;
   using UserConfiguration for DataTypes.UserConfigurationMap;
 
-  bytes32 public immutable networkBaseTokenPriceInUsdPriceId;
-  bytes32 public immutable marketReferenceCurrencyPriceInUsdPriceId;
-  IPyth public immutable pyth;
+  address public immutable networkBaseToken;
+  address public immutable marketReferenceCurrency;
   uint256 public constant ETH_CURRENCY_UNIT = 1 ether;
   address public constant MKR_ADDRESS = 0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2;
 
   constructor(
-    IPyth pythAddress,
-    bytes32 _networkBaseTokenPriceInUsdPriceId,
-    bytes32 _marketReferenceCurrencyPriceInUsdPriceId
+    address _networkBaseToken,
+    address _marketReferenceCurrency
   ) {
-    pyth = pythAddress;
-    networkBaseTokenPriceInUsdPriceId = _networkBaseTokenPriceInUsdPriceId;
-    marketReferenceCurrencyPriceInUsdPriceId = _marketReferenceCurrencyPriceInUsdPriceId;
+    networkBaseToken = _networkBaseToken;
+    marketReferenceCurrency = _marketReferenceCurrency;
   }
 
   function getReservesList(
@@ -84,7 +80,7 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
       reserveData.priceInMarketReferenceCurrency = oracle.getAssetPrice(
         reserveData.underlyingAsset
       );
-      reserveData.priceOracle = oracle.getPyth();
+      reserveData.priceOracle = IFallbackOracle(oracle.getFallbackOracle()).getPyth();
       reserveData.availableLiquidity = IERC20Detailed(reserveData.underlyingAsset).balanceOf(
         reserveData.aTokenAddress
       );
@@ -206,18 +202,18 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
     }
 
     BaseCurrencyInfo memory baseCurrencyInfo;
-    PythStructs.Price memory baseTokenPrice = pyth.getPriceNoOlderThan(networkBaseTokenPriceInUsdPriceId, 60);
-    baseCurrencyInfo.networkBaseTokenPriceInUsd = baseTokenPrice.price;
-    baseCurrencyInfo.networkBaseTokenPriceDecimals = uint8(uint32(-1 * baseTokenPrice.expo));
+    IFallbackOracle fallbackOracle =  IFallbackOracle(oracle.getFallbackOracle());
+   
+    baseCurrencyInfo.networkBaseTokenPriceInUsd = int256(fallbackOracle.getAssetPrice(networkBaseToken));
+    baseCurrencyInfo.networkBaseTokenPriceDecimals = fallbackOracle.getDecimals(networkBaseToken);
 
     try oracle.BASE_CURRENCY_UNIT() returns (uint256 baseCurrencyUnit) {
       baseCurrencyInfo.marketReferenceCurrencyUnit = baseCurrencyUnit;
       baseCurrencyInfo.marketReferenceCurrencyPriceInUsd = int256(baseCurrencyUnit);
     } catch (bytes memory /*lowLevelData*/) {
       baseCurrencyInfo.marketReferenceCurrencyUnit = ETH_CURRENCY_UNIT;
-      PythStructs.Price memory currencyPrice = pyth.getPriceNoOlderThan(marketReferenceCurrencyPriceInUsdPriceId, 60);
       baseCurrencyInfo
-        .marketReferenceCurrencyPriceInUsd = currencyPrice.price;
+        .marketReferenceCurrencyPriceInUsd = int256(fallbackOracle.getAssetPrice(marketReferenceCurrency));
     }
 
     return (reservesData, baseCurrencyInfo);

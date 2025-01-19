@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
+import {IFallbackOracle} from '@hedy_chu/core-v3/contracts/interfaces/IFallbackOracle.sol';
 import {ITransferStrategyBase} from '../interfaces/ITransferStrategyBase.sol';
-import {IEACAggregatorProxy} from '../../misc/interfaces/IEACAggregatorProxy.sol';
 
 library RewardsDataTypes {
   struct RewardsConfigInput {
@@ -12,7 +12,7 @@ library RewardsDataTypes {
     address asset;
     address reward;
     ITransferStrategyBase transferStrategy;
-    IEACAggregatorProxy rewardOracle;
+    IFallbackOracle rewardOracle;
   }
 
   struct UserAssetBalance {

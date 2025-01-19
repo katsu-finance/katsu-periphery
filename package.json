@@ -1,6 +1,6 @@
 {
   "name": "@hedy_chu/periphery-v3",
-  "version": "2.4.8",
+  "version": "2.4.13",
   "description": "Aave Protocol V3 periphery smart contracts",
   "files": [
     "contracts",
@@ -89,6 +89,6 @@
     "url": "git://github.com/aave/aave-v3-periphery"
   },
   "dependencies": {
-    "@hedy_chu/core-v3": "1.19.6"
+    "@hedy_chu/core-v3": "1.19.12"
   }
 }
