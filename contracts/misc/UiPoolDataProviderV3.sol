@@ -5,7 +5,6 @@ import {IERC20Detailed} from '@hedy_chu/core-v3/contracts/dependencies/openzeppe
 import {IPoolAddressesProvider} from '@hedy_chu/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
 import {IPool} from '@hedy_chu/core-v3/contracts/interfaces/IPool.sol';
 import {IAaveOracle} from '@hedy_chu/core-v3/contracts/interfaces/IAaveOracle.sol';
-import {IFallbackOracle} from '@hedy_chu/core-v3/contracts/interfaces/IFallbackOracle.sol';
 import {IAToken} from '@hedy_chu/core-v3/contracts/interfaces/IAToken.sol';
 import {IVariableDebtToken} from '@hedy_chu/core-v3/contracts/interfaces/IVariableDebtToken.sol';
 import {IStableDebtToken} from '@hedy_chu/core-v3/contracts/interfaces/IStableDebtToken.sol';
@@ -15,6 +14,7 @@ import {WadRayMath} from '@hedy_chu/core-v3/contracts/protocol/libraries/math/Wa
 import {ReserveConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/ReserveConfiguration.sol';
 import {UserConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/UserConfiguration.sol';
 import {DataTypes} from '@hedy_chu/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
+import {IEACAggregatorProxy} from './interfaces/IEACAggregatorProxy.sol';
 import {IERC20DetailedBytes} from './interfaces/IERC20DetailedBytes.sol';
 import {IUiPoolDataProviderV3} from './interfaces/IUiPoolDataProviderV3.sol';
 
@@ -23,17 +23,17 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
   using ReserveConfiguration for DataTypes.ReserveConfigurationMap;
   using UserConfiguration for DataTypes.UserConfigurationMap;
 
-  address public immutable networkBaseToken;
-  address public immutable marketReferenceCurrency;
+  IEACAggregatorProxy public immutable networkBaseTokenPriceInUsdProxyAggregator;
+  IEACAggregatorProxy public immutable marketReferenceCurrencyPriceInUsdProxyAggregator;
   uint256 public constant ETH_CURRENCY_UNIT = 1 ether;
   address public constant MKR_ADDRESS = 0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2;
 
   constructor(
-    address _networkBaseToken,
-    address _marketReferenceCurrency
+    IEACAggregatorProxy _networkBaseTokenPriceInUsdProxyAggregator,
+    IEACAggregatorProxy _marketReferenceCurrencyPriceInUsdProxyAggregator
   ) {
-    networkBaseToken = _networkBaseToken;
-    marketReferenceCurrency = _marketReferenceCurrency;
+    networkBaseTokenPriceInUsdProxyAggregator = _networkBaseTokenPriceInUsdProxyAggregator;
+    marketReferenceCurrencyPriceInUsdProxyAggregator = _marketReferenceCurrencyPriceInUsdProxyAggregator;
   }
 
   function getReservesList(
@@ -80,7 +80,7 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
       reserveData.priceInMarketReferenceCurrency = oracle.getAssetPrice(
         reserveData.underlyingAsset
       );
-      reserveData.priceOracle = IFallbackOracle(oracle.getFallbackOracle()).getPyth();
+      reserveData.priceOracle = oracle.getSourceOfAsset(reserveData.underlyingAsset);
       reserveData.availableLiquidity = IERC20Detailed(reserveData.underlyingAsset).balanceOf(
         reserveData.aTokenAddress
       );
@@ -202,10 +202,10 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
     }
 
     BaseCurrencyInfo memory baseCurrencyInfo;
-    IFallbackOracle fallbackOracle =  IFallbackOracle(oracle.getFallbackOracle());
-   
-    baseCurrencyInfo.networkBaseTokenPriceInUsd = int256(fallbackOracle.getAssetPrice(networkBaseToken));
-    baseCurrencyInfo.networkBaseTokenPriceDecimals = fallbackOracle.getDecimals(networkBaseToken);
+    baseCurrencyInfo.networkBaseTokenPriceInUsd = networkBaseTokenPriceInUsdProxyAggregator
+      .latestAnswer();
+    baseCurrencyInfo.networkBaseTokenPriceDecimals = networkBaseTokenPriceInUsdProxyAggregator
+      .decimals();
 
     try oracle.BASE_CURRENCY_UNIT() returns (uint256 baseCurrencyUnit) {
       baseCurrencyInfo.marketReferenceCurrencyUnit = baseCurrencyUnit;
@@ -213,7 +213,8 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
     } catch (bytes memory /*lowLevelData*/) {
       baseCurrencyInfo.marketReferenceCurrencyUnit = ETH_CURRENCY_UNIT;
       baseCurrencyInfo
-        .marketReferenceCurrencyPriceInUsd = int256(fallbackOracle.getAssetPrice(marketReferenceCurrency));
+        .marketReferenceCurrencyPriceInUsd = marketReferenceCurrencyPriceInUsdProxyAggregator
+        .latestAnswer();
     }
 
     return (reservesData, baseCurrencyInfo);

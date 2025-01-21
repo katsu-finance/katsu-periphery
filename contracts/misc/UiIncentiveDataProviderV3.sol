@@ -4,11 +4,11 @@ pragma solidity ^0.8.10;
 import {IERC20Detailed} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
 import {IPoolAddressesProvider} from '@hedy_chu/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
 import {IPool} from '@hedy_chu/core-v3/contracts/interfaces/IPool.sol';
-import {IFallbackOracle} from '@hedy_chu/core-v3/contracts/interfaces/IFallbackOracle.sol';
 import {IncentivizedERC20} from '@hedy_chu/core-v3/contracts/protocol/tokenization/base/IncentivizedERC20.sol';
 import {UserConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/UserConfiguration.sol';
 import {DataTypes} from '@hedy_chu/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
 import {IRewardsController} from '../rewards/interfaces/IRewardsController.sol';
+import {IEACAggregatorProxy} from './interfaces/IEACAggregatorProxy.sol';
 import {IUiIncentiveDataProviderV3} from './interfaces/IUiIncentiveDataProviderV3.sol';
 
 contract UiIncentiveDataProviderV3 is IUiIncentiveDataProviderV3 {
@@ -85,9 +85,12 @@ contract UiIncentiveDataProviderV3 is IUiIncentiveDataProviderV3 {
           rewardInformation.rewardOracleAddress = aTokenIncentiveController.getRewardOracle(
             rewardInformation.rewardTokenAddress
           );
-          IFallbackOracle fallbackOracle = IFallbackOracle(rewardInformation.rewardOracleAddress);
-          rewardInformation.priceFeedDecimals = fallbackOracle.getDecimals(rewardInformation.rewardTokenAddress);
-          rewardInformation.rewardPriceFeed = int256(fallbackOracle.getAssetPrice(rewardInformation.rewardTokenAddress));
+          rewardInformation.priceFeedDecimals = IEACAggregatorProxy(
+            rewardInformation.rewardOracleAddress
+          ).decimals();
+          rewardInformation.rewardPriceFeed = IEACAggregatorProxy(
+            rewardInformation.rewardOracleAddress
+          ).latestAnswer();
 
           aRewardsInformation[j] = rewardInformation;
         }
@@ -136,10 +139,12 @@ contract UiIncentiveDataProviderV3 is IUiIncentiveDataProviderV3 {
           rewardInformation.rewardOracleAddress = vTokenIncentiveController.getRewardOracle(
             rewardInformation.rewardTokenAddress
           );
-          IFallbackOracle fallbackOracle = IFallbackOracle(rewardInformation.rewardOracleAddress);
-          rewardInformation.priceFeedDecimals = fallbackOracle.getDecimals(rewardInformation.rewardTokenAddress);
-          rewardInformation.rewardPriceFeed = int256(fallbackOracle.getAssetPrice(rewardInformation.rewardTokenAddress));
-
+          rewardInformation.priceFeedDecimals = IEACAggregatorProxy(
+            rewardInformation.rewardOracleAddress
+          ).decimals();
+          rewardInformation.rewardPriceFeed = IEACAggregatorProxy(
+            rewardInformation.rewardOracleAddress
+          ).latestAnswer();
 
           vRewardsInformation[j] = rewardInformation;
         }
@@ -188,10 +193,12 @@ contract UiIncentiveDataProviderV3 is IUiIncentiveDataProviderV3 {
           rewardInformation.rewardOracleAddress = sTokenIncentiveController.getRewardOracle(
             rewardInformation.rewardTokenAddress
           );
-          IFallbackOracle fallbackOracle = IFallbackOracle(rewardInformation.rewardOracleAddress);
-          rewardInformation.priceFeedDecimals = fallbackOracle.getDecimals(rewardInformation.rewardTokenAddress);
-          rewardInformation.rewardPriceFeed = int256(fallbackOracle.getAssetPrice(rewardInformation.rewardTokenAddress));
-
+          rewardInformation.priceFeedDecimals = IEACAggregatorProxy(
+            rewardInformation.rewardOracleAddress
+          ).decimals();
+          rewardInformation.rewardPriceFeed = IEACAggregatorProxy(
+            rewardInformation.rewardOracleAddress
+          ).latestAnswer();
 
           sRewardsInformation[j] = rewardInformation;
         }
@@ -266,9 +273,12 @@ contract UiIncentiveDataProviderV3 is IUiIncentiveDataProviderV3 {
           userRewardInformation.rewardOracleAddress = aTokenIncentiveController.getRewardOracle(
             userRewardInformation.rewardTokenAddress
           );
-          IFallbackOracle fallbackOracle = IFallbackOracle(userRewardInformation.rewardOracleAddress);
-          userRewardInformation.priceFeedDecimals = fallbackOracle.getDecimals(userRewardInformation.rewardTokenAddress);
-          userRewardInformation.rewardPriceFeed = int256(fallbackOracle.getAssetPrice(userRewardInformation.rewardTokenAddress));
+          userRewardInformation.priceFeedDecimals = IEACAggregatorProxy(
+            userRewardInformation.rewardOracleAddress
+          ).decimals();
+          userRewardInformation.rewardPriceFeed = IEACAggregatorProxy(
+            userRewardInformation.rewardOracleAddress
+          ).latestAnswer();
 
           aUserRewardsInformation[j] = userRewardInformation;
         }
@@ -316,10 +326,12 @@ contract UiIncentiveDataProviderV3 is IUiIncentiveDataProviderV3 {
           userRewardInformation.rewardOracleAddress = vTokenIncentiveController.getRewardOracle(
             userRewardInformation.rewardTokenAddress
           );
-          IFallbackOracle fallbackOracle = IFallbackOracle(userRewardInformation.rewardOracleAddress);
-          userRewardInformation.priceFeedDecimals = fallbackOracle.getDecimals(userRewardInformation.rewardTokenAddress);
-          userRewardInformation.rewardPriceFeed = int256(fallbackOracle.getAssetPrice(userRewardInformation.rewardTokenAddress));
-
+          userRewardInformation.priceFeedDecimals = IEACAggregatorProxy(
+            userRewardInformation.rewardOracleAddress
+          ).decimals();
+          userRewardInformation.rewardPriceFeed = IEACAggregatorProxy(
+            userRewardInformation.rewardOracleAddress
+          ).latestAnswer();
 
           vUserRewardsInformation[j] = userRewardInformation;
         }
@@ -367,10 +379,12 @@ contract UiIncentiveDataProviderV3 is IUiIncentiveDataProviderV3 {
           userRewardInformation.rewardOracleAddress = sTokenIncentiveController.getRewardOracle(
             userRewardInformation.rewardTokenAddress
           );
-          IFallbackOracle fallbackOracle = IFallbackOracle(userRewardInformation.rewardOracleAddress);
-          userRewardInformation.priceFeedDecimals = fallbackOracle.getDecimals(userRewardInformation.rewardTokenAddress);
-          userRewardInformation.rewardPriceFeed = int256(fallbackOracle.getAssetPrice(userRewardInformation.rewardTokenAddress));
-
+          userRewardInformation.priceFeedDecimals = IEACAggregatorProxy(
+            userRewardInformation.rewardOracleAddress
+          ).decimals();
+          userRewardInformation.rewardPriceFeed = IEACAggregatorProxy(
+            userRewardInformation.rewardOracleAddress
+          ).latestAnswer();
 
           sUserRewardsInformation[j] = userRewardInformation;
         }
