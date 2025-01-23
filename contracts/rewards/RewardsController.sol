@@ -8,7 +8,7 @@ import {RewardsDistributor} from './RewardsDistributor.sol';
 import {IRewardsController} from './interfaces/IRewardsController.sol';
 import {ITransferStrategyBase} from './interfaces/ITransferStrategyBase.sol';
 import {RewardsDataTypes} from './libraries/RewardsDataTypes.sol';
-import {IFallbackOracle} from '@hedy_chu/core-v3/contracts/interfaces/IFallbackOracle.sol';
+import {IEACAggregatorProxy} from '../misc/interfaces/IEACAggregatorProxy.sol';
 
 /**
  * @title RewardsController
@@ -34,7 +34,7 @@ contract RewardsController is RewardsDistributor, VersionedInitializable, IRewar
   // the current Aave UI without the need to setup an external price registry
   // At the moment of reward configuration, the Incentives Controller performs
   // a check to see if the provided reward oracle contains `latestAnswer`.
-  mapping(address => IFallbackOracle) internal _rewardOracle;
+  mapping(address => IEACAggregatorProxy) internal _rewardOracle;
 
   modifier onlyAuthorizedClaimers(address claimer, address user) {
     require(_authorizedClaimers[user] == claimer, 'CLAIMER_UNAUTHORIZED');
@@ -100,7 +100,7 @@ contract RewardsController is RewardsDistributor, VersionedInitializable, IRewar
   /// @inheritdoc IRewardsController
   function setRewardOracle(
     address reward,
-    IFallbackOracle rewardOracle
+    IEACAggregatorProxy rewardOracle
   ) external onlyEmissionManager {
     _setRewardOracle(reward, rewardOracle);
   }
@@ -347,8 +347,8 @@ contract RewardsController is RewardsDistributor, VersionedInitializable, IRewar
    * @param rewardOracle The address of the price oracle
    */
 
-  function _setRewardOracle(address reward, IFallbackOracle rewardOracle) internal {
-    require(rewardOracle.getAssetPrice(reward) > 0, 'ORACLE_MUST_RETURN_PRICE');
+  function _setRewardOracle(address reward, IEACAggregatorProxy rewardOracle) internal {
+    require(rewardOracle.latestAnswer() > 0, 'ORACLE_MUST_RETURN_PRICE');
     _rewardOracle[reward] = rewardOracle;
     emit RewardOracleUpdated(reward, address(rewardOracle));
   }

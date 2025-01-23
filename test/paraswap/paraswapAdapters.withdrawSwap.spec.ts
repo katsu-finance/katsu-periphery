@@ -5,7 +5,7 @@ import {
   getFirstSigner,
   parseUnitsFromToken,
   tEthereumAddress,
-} from '@aave/deploy-v3';
+} from '@hedy_chu/deploy-v3';
 import {
   MockParaSwapAugustus__factory,
   MockParaSwapAugustusRegistry__factory,
