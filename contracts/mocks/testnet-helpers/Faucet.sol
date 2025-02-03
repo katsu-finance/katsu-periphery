@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import {Ownable} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/Ownable.sol';
+import {Ownable} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/Ownable.sol';
 import {TestnetERC20} from './TestnetERC20.sol';
 import {IFaucet} from './IFaucet.sol';
 
@@ -91,7 +91,6 @@ contract Faucet is IFaucet, Ownable {
       TestnetERC20(childContracts[i]).setProtected(state);
     }
   }
-
 
   /// @inheritdoc IFaucet
   function setMaximumMintAmount(uint256 newMaxMintAmount) external override onlyOwner {

@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
-import {IERC20Detailed} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
-import {IPoolAddressesProvider} from '@hedy_chu/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
-import {IPool} from '@hedy_chu/core-v3/contracts/interfaces/IPool.sol';
-import {IAaveOracle} from '@hedy_chu/core-v3/contracts/interfaces/IAaveOracle.sol';
-import {IAToken} from '@hedy_chu/core-v3/contracts/interfaces/IAToken.sol';
-import {IVariableDebtToken} from '@hedy_chu/core-v3/contracts/interfaces/IVariableDebtToken.sol';
-import {IStableDebtToken} from '@hedy_chu/core-v3/contracts/interfaces/IStableDebtToken.sol';
-import {DefaultReserveInterestRateStrategy} from '@hedy_chu/core-v3/contracts/protocol/pool/DefaultReserveInterestRateStrategy.sol';
-import {AaveProtocolDataProvider} from '@hedy_chu/core-v3/contracts/misc/AaveProtocolDataProvider.sol';
-import {WadRayMath} from '@hedy_chu/core-v3/contracts/protocol/libraries/math/WadRayMath.sol';
-import {ReserveConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/ReserveConfiguration.sol';
-import {UserConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/UserConfiguration.sol';
-import {DataTypes} from '@hedy_chu/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
+import {IERC20Detailed} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
+import {IPoolAddressesProvider} from '@katsu-finance/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
+import {IPool} from '@katsu-finance/core-v3/contracts/interfaces/IPool.sol';
+import {IAaveOracle} from '@katsu-finance/core-v3/contracts/interfaces/IAaveOracle.sol';
+import {IAToken} from '@katsu-finance/core-v3/contracts/interfaces/IAToken.sol';
+import {IVariableDebtToken} from '@katsu-finance/core-v3/contracts/interfaces/IVariableDebtToken.sol';
+import {IStableDebtToken} from '@katsu-finance/core-v3/contracts/interfaces/IStableDebtToken.sol';
+import {DefaultReserveInterestRateStrategy} from '@katsu-finance/core-v3/contracts/protocol/pool/DefaultReserveInterestRateStrategy.sol';
+import {AaveProtocolDataProvider} from '@katsu-finance/core-v3/contracts/misc/AaveProtocolDataProvider.sol';
+import {WadRayMath} from '@katsu-finance/core-v3/contracts/protocol/libraries/math/WadRayMath.sol';
+import {ReserveConfiguration} from '@katsu-finance/core-v3/contracts/protocol/libraries/configuration/ReserveConfiguration.sol';
+import {UserConfiguration} from '@katsu-finance/core-v3/contracts/protocol/libraries/configuration/UserConfiguration.sol';
+import {DataTypes} from '@katsu-finance/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
 import {IEACAggregatorProxy} from './interfaces/IEACAggregatorProxy.sol';
 import {IERC20DetailedBytes} from './interfaces/IERC20DetailedBytes.sol';
 import {IUiPoolDataProviderV3} from './interfaces/IUiPoolDataProviderV3.sol';

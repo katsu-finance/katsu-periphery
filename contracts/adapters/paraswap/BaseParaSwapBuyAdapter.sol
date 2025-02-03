@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
-import {SafeERC20} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/SafeERC20.sol';
-import {SafeMath} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/SafeMath.sol';
-import {PercentageMath} from '@hedy_chu/core-v3/contracts/protocol/libraries/math/PercentageMath.sol';
-import {IPoolAddressesProvider} from '@hedy_chu/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
-import {IERC20Detailed} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
+import {SafeERC20} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/SafeERC20.sol';
+import {SafeMath} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/SafeMath.sol';
+import {PercentageMath} from '@katsu-finance/core-v3/contracts/protocol/libraries/math/PercentageMath.sol';
+import {IPoolAddressesProvider} from '@katsu-finance/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
+import {IERC20Detailed} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
 import {IParaSwapAugustus} from './interfaces/IParaSwapAugustus.sol';
 import {IParaSwapAugustusRegistry} from './interfaces/IParaSwapAugustusRegistry.sol';
 import {BaseParaSwapAdapter} from './BaseParaSwapAdapter.sol';

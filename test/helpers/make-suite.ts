@@ -50,7 +50,7 @@ import {
   impersonateAddress,
   getEmissionManager,
   getFaucet,
-} from '@hedy_chu/deploy-v3';
+} from '@aave/deploy-v3';
 import { deployATokenMock } from '../rewards/helpers/deploy';
 import { parseEther } from 'ethers/lib/utils';
 import { EmissionManager, Faucet } from '../../types';

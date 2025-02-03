@@ -8,7 +8,7 @@ import {
   parseUnitsFromToken,
   StableDebtToken,
   tEthereumAddress,
-} from '@hedy_chu/deploy-v3';
+} from '@aave/deploy-v3';
 import {
   MockParaSwapAugustusRegistry__factory,
   MockParaSwapAugustus__factory,

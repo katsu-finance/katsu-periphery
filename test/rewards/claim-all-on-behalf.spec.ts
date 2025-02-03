@@ -1,6 +1,11 @@
 import { AaveOracle } from './../../types/AaveOracle.d';
 import { expect } from 'chai';
-import { waitForTx, getBlockTimestamp, ZERO_ADDRESS, impersonateAddress } from '@hedy_chu/deploy-v3';
+import {
+  waitForTx,
+  getBlockTimestamp,
+  ZERO_ADDRESS,
+  impersonateAddress,
+} from '@aave/deploy-v3';
 import { makeSuite, TestEnv } from '../helpers/make-suite';
 
 makeSuite('AaveIncentivesController - Claim all rewards on behalf', (testEnv: TestEnv) => {

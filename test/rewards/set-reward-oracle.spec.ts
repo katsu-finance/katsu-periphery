@@ -1,5 +1,5 @@
 import { makeSuite, TestEnv } from '../helpers/make-suite';
-import { deployMockAggregator, ZERO_ADDRESS } from '@hedy_chu/deploy-v3';
+import { deployMockAggregator, ZERO_ADDRESS } from '@aave/deploy-v3';
 import { hrtime } from 'process';
 import { parseEther } from '@ethersproject/units';
 

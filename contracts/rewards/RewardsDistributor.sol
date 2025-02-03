@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.10;
 
-import {IScaledBalanceToken} from '@hedy_chu/core-v3/contracts/interfaces/IScaledBalanceToken.sol';
-import {IERC20Detailed} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
-import {SafeCast} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/SafeCast.sol';
+import {IScaledBalanceToken} from '@katsu-finance/core-v3/contracts/interfaces/IScaledBalanceToken.sol';
+import {IERC20Detailed} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
+import {SafeCast} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/SafeCast.sol';
 import {IRewardsDistributor} from './interfaces/IRewardsDistributor.sol';
 import {RewardsDataTypes} from './libraries/RewardsDataTypes.sol';
 

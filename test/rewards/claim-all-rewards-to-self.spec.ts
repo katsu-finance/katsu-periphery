@@ -7,7 +7,7 @@ import {
   MAX_UINT_AMOUNT,
   ERC20__factory,
   advanceTimeAndBlock,
-} from '@hedy_chu/deploy-v3';
+} from '@aave/deploy-v3';
 import {
   assetDataComparator,
   getRewards,

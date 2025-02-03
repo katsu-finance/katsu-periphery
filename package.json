@@ -1,6 +1,6 @@
 {
-  "name": "@hedy_chu/periphery-v3",
-  "version": "2.4.15",
+  "name": "@katsu-finance/periphery-v3",
+  "version": "1.0.0",
   "description": "Aave Protocol V3 periphery smart contracts",
   "files": [
     "contracts",
@@ -34,9 +34,9 @@
   },
   "license": "AGPLv3",
   "devDependencies": {
-    "@hedy_chu/deploy-v3": "1.47.9",
     "@ethereum-waffle/mock-contract": "4.0.4",
     "@ethersproject/abi": "^5.1.0",
+    "@aave/deploy-v3": "1.56.2",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.2",
     "@nomiclabs/hardhat-ethers": "^2.1.0",
     "@nomiclabs/hardhat-etherscan": "^2.1.1",
@@ -86,9 +86,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/aave/aave-v3-periphery"
+    "url": "git@github.com:katsu-finance/katsu-periphery.git"
   },
   "dependencies": {
-    "@hedy_chu/core-v3": "1.19.13"
+    "@katsu-finance/core-v3": "1.0.0"
   }
 }

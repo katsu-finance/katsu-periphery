@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
-import {Address} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/Address.sol';
-import {IERC20} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20.sol';
+import {Address} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/Address.sol';
+import {IERC20} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20.sol';
 
-import {IPoolAddressesProvider} from '@hedy_chu/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
-import {IPool} from '@hedy_chu/core-v3/contracts/interfaces/IPool.sol';
-import {GPv2SafeERC20} from '@hedy_chu/core-v3/contracts/dependencies/gnosis/contracts/GPv2SafeERC20.sol';
-import {ReserveConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/ReserveConfiguration.sol';
-import {DataTypes} from '@hedy_chu/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
+import {IPoolAddressesProvider} from '@katsu-finance/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
+import {IPool} from '@katsu-finance/core-v3/contracts/interfaces/IPool.sol';
+import {GPv2SafeERC20} from '@katsu-finance/core-v3/contracts/dependencies/gnosis/contracts/GPv2SafeERC20.sol';
+import {ReserveConfiguration} from '@katsu-finance/core-v3/contracts/protocol/libraries/configuration/ReserveConfiguration.sol';
+import {DataTypes} from '@katsu-finance/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
 
 /**
  * @title WalletBalanceProvider contract

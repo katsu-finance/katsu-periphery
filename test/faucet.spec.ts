@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { expect } from 'chai';
 import { parseEther } from 'ethers/lib/utils';
-import { ONE_ADDRESS, waitForTx } from '@hedy_chu/deploy-v3';
+import { ONE_ADDRESS, waitForTx } from '@aave/deploy-v3';
 import { makeSuite, TestEnv } from './helpers/make-suite';
 import { Faucet, TestnetERC20, TestnetERC20__factory } from '../types';
 

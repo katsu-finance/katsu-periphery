@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
-import {Ownable} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/Ownable.sol';
+import {Ownable} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/Ownable.sol';
 import {IEACAggregatorProxy} from '../misc/interfaces/IEACAggregatorProxy.sol';
 import {IEmissionManager} from './interfaces/IEmissionManager.sol';
 import {ITransferStrategyBase} from './interfaces/ITransferStrategyBase.sol';

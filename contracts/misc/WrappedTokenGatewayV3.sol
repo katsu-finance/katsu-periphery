@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
-import {Ownable} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/Ownable.sol';
-import {IERC20} from '@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20.sol';
-import {GPv2SafeERC20} from '@hedy_chu/core-v3/contracts/dependencies/gnosis/contracts/GPv2SafeERC20.sol';
-import {IWETH} from '@hedy_chu/core-v3/contracts/misc/interfaces/IWETH.sol';
-import {IPool} from '@hedy_chu/core-v3/contracts/interfaces/IPool.sol';
-import {IAToken} from '@hedy_chu/core-v3/contracts/interfaces/IAToken.sol';
-import {ReserveConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/ReserveConfiguration.sol';
-import {UserConfiguration} from '@hedy_chu/core-v3/contracts/protocol/libraries/configuration/UserConfiguration.sol';
-import {DataTypes} from '@hedy_chu/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
+import {Ownable} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/Ownable.sol';
+import {IERC20} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20.sol';
+import {GPv2SafeERC20} from '@katsu-finance/core-v3/contracts/dependencies/gnosis/contracts/GPv2SafeERC20.sol';
+import {IWETH} from '@katsu-finance/core-v3/contracts/misc/interfaces/IWETH.sol';
+import {IPool} from '@katsu-finance/core-v3/contracts/interfaces/IPool.sol';
+import {IAToken} from '@katsu-finance/core-v3/contracts/interfaces/IAToken.sol';
+import {ReserveConfiguration} from '@katsu-finance/core-v3/contracts/protocol/libraries/configuration/ReserveConfiguration.sol';
+import {UserConfiguration} from '@katsu-finance/core-v3/contracts/protocol/libraries/configuration/UserConfiguration.sol';
+import {DataTypes} from '@katsu-finance/core-v3/contracts/protocol/libraries/types/DataTypes.sol';
 import {IWrappedTokenGatewayV3} from './interfaces/IWrappedTokenGatewayV3.sol';
 import {DataTypesHelper} from '../libraries/DataTypesHelper.sol';
 
