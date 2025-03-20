@@ -259,7 +259,7 @@ makeSuite('Incentives Controller V2 claimAllRewards tests', (testEnv) => {
             );
         }
 
-        let expectedClaimedAmount: BigNumber = unclaimedRewardsStorageBefore[i].add(
+        const expectedClaimedAmount: BigNumber = unclaimedRewardsStorageBefore[i].add(
           expectedAccruedRewards[i]
         );
         expect(unclaimedRewardsStorageAfter[i].toString()).to.be.equal(

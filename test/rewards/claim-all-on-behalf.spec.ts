@@ -1,5 +1,11 @@
+import { AaveOracle } from './../../types/AaveOracle.d';
 import { expect } from 'chai';
-import { waitForTx, getBlockTimestamp, ZERO_ADDRESS, impersonateAddress } from '@aave/deploy-v3';
+import {
+  waitForTx,
+  getBlockTimestamp,
+  ZERO_ADDRESS,
+  impersonateAddress,
+} from '@aave/deploy-v3';
 import { makeSuite, TestEnv } from '../helpers/make-suite';
 
 makeSuite('AaveIncentivesController - Claim all rewards on behalf', (testEnv: TestEnv) => {
@@ -75,7 +81,7 @@ makeSuite('AaveIncentivesController - Claim all rewards on behalf', (testEnv: Te
   });
 
   it('Should claimRewardsOnBehalf revert if to argument address is ZERO_ADDRESS', async () => {
-    const { rewardsController, users, aDaiMockV2, stakedAave } = testEnv;
+    const { rewardsController, users, aDaiMockV2 } = testEnv;
     const [userWithRewards, thirdClaimer] = users;
 
     await waitForTx(await aDaiMockV2.setUserBalanceAndSupply('300000', '30000'));
@@ -88,7 +94,7 @@ makeSuite('AaveIncentivesController - Claim all rewards on behalf', (testEnv: Te
   });
 
   it('Should claimRewardsOnBehalf revert if user argument is ZERO_ADDRESS', async () => {
-    const { rewardsController, users, aDaiMockV2, deployer, stakedAave } = testEnv;
+    const { rewardsController, users, aDaiMockV2 } = testEnv;
     const [, thirdClaimer] = users;
 
     await waitForTx(await aDaiMockV2.setUserBalanceAndSupply('300000', '30000'));

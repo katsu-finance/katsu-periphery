@@ -17,7 +17,7 @@ if [ ! "$COVERAGE" = true ]; then
     # remove hardhat and artifacts cache
     npm run ci:clean
 
-    # compile @aave/core-v3 contracts
+    # compile @katsu-finance/core-v3 contracts
     npm run compile
 else
     echo "[BASH] Skipping compilation to keep coverage artifacts"
@@ -40,6 +40,6 @@ cp -r 'node_modules/@aave/deploy-v3/artifacts/@aave/safety-module/contracts/stak
 cp -r 'node_modules/@aave/deploy-v3/artifacts/@aave/safety-module/contracts/proposals' temp-artifacts/deploy/stake
 
 # Export MARKET_NAME variable to use Aave market as testnet deployment setup
-export MARKET_NAME="Test"
+export MARKET_NAME="story"
 
 echo "[BASH] Testnet environment ready"

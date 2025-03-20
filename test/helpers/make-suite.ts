@@ -187,10 +187,10 @@ export async function initializeMakeSuite() {
   testEnv.helpersContract = await getAaveProtocolDataProvider();
 
   const allTokens = await testEnv.helpersContract.getAllATokens();
-  const aDaiAddress = allTokens.find((aToken) => aToken.symbol === 'aTestDAI')?.tokenAddress;
-  const aUsdcAddress = allTokens.find((aToken) => aToken.symbol === 'aTestUSDC')?.tokenAddress;
+  const aDaiAddress = allTokens.find((aToken) => aToken.symbol === 'aKatsuDAI')?.tokenAddress;
+  const aUsdcAddress = allTokens.find((aToken) => aToken.symbol === 'aKatsuUSDC')?.tokenAddress;
 
-  const aWEthAddress = allTokens.find((aToken) => aToken.symbol === 'aTestWETH')?.tokenAddress;
+  const aWEthAddress = allTokens.find((aToken) => aToken.symbol === 'aKatsuWETH')?.tokenAddress;
 
   const reservesTokens = await testEnv.helpersContract.getAllReservesTokens();
 
@@ -284,6 +284,7 @@ export async function initializeMakeSuite() {
   );
 
   // Support direct minting
+  console.log('reward token address', testEnv.rewardToken.address);
   const testnetTokensAddresses = testnetTokens.map(({ artifact }) => artifact.address);
   await waitForTx(await testEnv.faucetMintable.setProtectedOfChild(testnetTokensAddresses, false));
   await waitForTx(

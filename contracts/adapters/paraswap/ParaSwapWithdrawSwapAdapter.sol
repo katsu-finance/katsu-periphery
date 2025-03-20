@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
-import {IERC20Detailed} from '@aave/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
-import {IERC20WithPermit} from '@aave/core-v3/contracts/interfaces/IERC20WithPermit.sol';
-import {IPoolAddressesProvider} from '@aave/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
+import {IERC20Detailed} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol';
+import {IERC20WithPermit} from '@katsu-finance/core-v3/contracts/interfaces/IERC20WithPermit.sol';
+import {IPoolAddressesProvider} from '@katsu-finance/core-v3/contracts/interfaces/IPoolAddressesProvider.sol';
 import {BaseParaSwapSellAdapter} from './BaseParaSwapSellAdapter.sol';
 import {IParaSwapAugustusRegistry} from './interfaces/IParaSwapAugustusRegistry.sol';
-import {SafeERC20} from '@aave/core-v3/contracts/dependencies/openzeppelin/contracts/SafeERC20.sol';
+import {SafeERC20} from '@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/SafeERC20.sol';
 import {IParaSwapAugustus} from './interfaces/IParaSwapAugustus.sol';
 import {ReentrancyGuard} from '../../dependencies/openzeppelin/ReentrancyGuard.sol';
 
